@@ -1,6 +1,5 @@
 -- create data base
 
-
 CREATE DATABASE "Clinic"
     WITH
     OWNER = postgres
@@ -9,6 +8,7 @@ CREATE DATABASE "Clinic"
     IS_TEMPLATE = False;
 
 -- create tables for database
+
 -- create patients table
 
 create table patients(
@@ -33,3 +33,28 @@ create table treatment(
 	type varchar(255),
 	name varchar(255)
 );
+
+-- Invoices table
+
+create table invoices (
+	id serial primary key,
+	total_amount decimal,
+	generated_at timestamp,
+	payed_at timestamp,
+	medical_history_id integer references medical_histories (id)
+);
+
+-- invoice_item 
+
+create table invoice_items (
+	id serial primary key,
+	unit_price decimal,
+	quantity integer,
+	total_price decimal,
+	invoice_id integer references invoices(id),
+	treatment_id integer references treatment(id)
+);
+
+ALTER TABLE medical_histories add constraint id foreign key (id) references treatment (id);
+
+ALTER TABLE treatment add constraint id foreign key (id) references medical_histories (id);
