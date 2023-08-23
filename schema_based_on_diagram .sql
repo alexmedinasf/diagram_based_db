@@ -58,3 +58,13 @@ create table invoice_items (
 ALTER TABLE medical_histories add constraint id foreign key (id) references treatment (id);
 
 ALTER TABLE treatment add constraint id foreign key (id) references medical_histories (id);
+
+create table mh_treatment (
+	id serial primary key,
+	mh_id integer references medical_histories(id),
+	treatment_id integer references treatment (id)
+);
+
+create index index_mh_id on mh_treatment (mh_id);
+
+create index index_treatment_id on mh_treatment (treatment_id);
